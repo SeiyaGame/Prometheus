@@ -8,6 +8,6 @@ This is a translation and update of this original dashboard version:
 
 :no_entry: The Alert rules are in test phase, at your own risk
 
-Screenshot
+## Screenshot
 
-![](grafana_dashboard.PNG)
+![](windows_exporter/grafana_dashboard.PNG)
