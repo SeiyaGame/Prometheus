@@ -1,0 +1,146 @@
+groups:
+
+- name: windowshostGroup
+  rules:
+
+###
+# CPU
+###
+
+  # CPU Usage is more than 80%
+  - alert: WindowsServerCpuUsage
+    expr: 100 - (avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[2m])) * 100) > 80
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server CPU Usage (instance {{ $labels.instance }})
+      description: "CPU Usage is more than 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Memory
+###
+
+  # Memory usage is more than 90%
+  - alert: WindowsServerMemoryUsage
+    expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 90
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server memory Usage (instance {{ $labels.instance }})
+      description: "Memory usage is more than 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Disk
+###
+
+  # Disk usage is more than 80%
+  - alert: WindowsServerDiskSpaceUsage
+    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024 ) / (windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024)) > 80
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Windows Server disk Space Usage (instance {{ $labels.instance }})
+      description: "Disk usage is more than 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Disk Latency
+###
+
+  # Disk latency (read operations > 100ms)
+  - alert: WindowsServerDiskReadLatency
+    expr: rate(windows_logical_disk_read_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.1
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server disk read latency (instance {{ $labels.instance }})
+      description: "Disk latency (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # Disk latency (write operations > 100ms)
+  - alert: WindowsServerDiskWriteLatency
+    expr: rate(windows_logical_disk_write_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.1
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server disk write latency (instance {{ $labels.instance }})
+      description: "Disk latency (write operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Disk usage
+###
+
+  # Disk is probably reading too much data (> 50 MB/s)
+  - alert: WindowsServerDiskReadRate
+    expr: rate(windows_logical_disk_read_bytes_total{volume=~"[A-Z]:"}[2m]) / 1024 / 1024 > 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server disk read rate (instance {{ $labels.instance }})
+      description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # Disk is probably writing too much data (> 50 MB/s)
+  - alert: WindowsServerDiskWriteRate
+    expr: rate(windows_logical_disk_write_bytes_total{volume=~"[A-Z]:"}[2m]) / 1024 / 1024 > 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server disk write rate (instance {{ $labels.instance }})
+      description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Windows exporter
+###
+
+  # Collector {{ $labels.collector }} was not successful
+  - alert: WindowsServerCollectorError
+    expr: windows_exporter_collector_success == 0
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Windows Server collector Error (instance {{ $labels.instance }})
+      description: "Collector {{ $labels.collector }} was not successful\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Uptime
+###
+
+# Uptime is lower than 30 min
+  - alert: WindowsServerUptime
+    expr: (time() - windows_system_system_up_time) / 60 < 30
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Windows Server Uptime (instance {{ $labels.instance }})
+      description: "Uptime is lower than 30 min\n VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+###
+# Network
+###
+
+  # Windows Server network interfaces are probably receiving too much data (> 100 MB/s)
+  - alert: WindowsServerUnusualNetworkThroughputIn
+    expr: sum by (instance) (rate(windows_net_bytes_sent_total{nic!~'isatap.*|VPN.*'}[2m])) / 1024 / 1024 > 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server unusual network throughput in (instance {{ $labels.instance }})
+      description: "Windows Server network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # Windows Server network interfaces are probably sending too much data (> 100 MB/s)
+  - alert: WindowsServerUnusualNetworkThroughputOut
+    expr: sum by (instance) (rate(windows_net_bytes_received_total{nic!~'isatap.*|VPN.*'}[2m])) / 1024 / 1024 > 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Windows Server unusual network throughput out (instance {{ $labels.instance }})
+      description: "Windows Server network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
