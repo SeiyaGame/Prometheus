@@ -79,7 +79,7 @@
   "gnetId": 10467,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1641145510134,
+  "iteration": 1641293332388,
   "links": [
     {
       "icon": "question",
@@ -731,10 +731,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -786,6 +782,11 @@
           "application": {
             "filter": ""
           },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
           "expr": "max by (instance) (irate(windows_net_bytes_sent_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
           "format": "time_series",
           "functions": [],
@@ -813,6 +814,10 @@
         {
           "application": {
             "filter": ""
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "expr": "-max by (instance) (irate(windows_net_bytes_received_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
           "format": "time_series",
@@ -877,10 +882,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -932,7 +933,12 @@
           "application": {
             "filter": ""
           },
-          "expr": "-max by (instance) (irate(windows_logical_disk_read_bytes_total[2m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "-max by (instance) (irate(windows_logical_disk_read_bytes_total{job=~\"$job\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -960,7 +966,12 @@
           "application": {
             "filter": ""
           },
-          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total[2m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total{job=~\"$job\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1024,10 +1035,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1079,7 +1086,12 @@
           "application": {
             "filter": ""
           },
-          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total[2m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total{job=~\"$job\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1107,7 +1119,12 @@
           "application": {
             "filter": ""
           },
-          "expr": "max by (instance) (irate(windows_logical_disk_writes_total[2m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "max by (instance) (irate(windows_logical_disk_writes_total{job=~\"$job\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -3376,6 +3393,6 @@
   "timezone": "",
   "title": "windows_exporter for Prometheus Dashboard EN v20220102",
   "uid": "1XaRI0Ink",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }
