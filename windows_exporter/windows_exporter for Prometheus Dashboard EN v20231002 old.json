@@ -1459,6 +1459,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "displayName": "${__series.name}",
           "mappings": [],
           "max": 100,
           "min": 0,
