@@ -127,7 +127,7 @@ groups:
 
   # Windows Server network interfaces are probably receiving too much data (> 100 MB/s)
   - alert: WindowsServerUnusualNetworkThroughputIn
-    expr: sum by (instance) (rate(windows_net_bytes_sent_total{nic!~'isatap.*|VPN.*'}[2m])) / 1024 / 1024 > 100
+    expr: sum by (instance) (rate(windows_net_bytes_sent_total{nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m])) / 1024 / 1024 > 100
     for: 5m
     labels:
       severity: warning
@@ -137,7 +137,7 @@ groups:
 
   # Windows Server network interfaces are probably sending too much data (> 100 MB/s)
   - alert: WindowsServerUnusualNetworkThroughputOut
-    expr: sum by (instance) (rate(windows_net_bytes_received_total{nic!~'isatap.*|VPN.*'}[2m])) / 1024 / 1024 > 100
+    expr: sum by (instance) (rate(windows_net_bytes_received_total{nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m])) / 1024 / 1024 > 100
     for: 5m
     labels:
       severity: warning
