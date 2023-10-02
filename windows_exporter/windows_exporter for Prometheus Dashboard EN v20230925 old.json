@@ -519,7 +519,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "1 - (windows_logical_disk_free_bytes{job=~\"$job\",volume=~\"C:\"}/windows_logical_disk_size_bytes{job=~\"$job\",volume=~\"C:\"})",
+          "expr": "1 - (windows_logical_disk_free_bytes{job=~\"$job\", volume=~\"C:\"}/windows_logical_disk_size_bytes{job=~\"$job\", volume=~\"C:\"})",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -531,7 +531,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "max by (instance) (1-windows_logical_disk_free_bytes{job=~\"$job\"}/windows_logical_disk_size_bytes{job=~\"$job\"})",
+          "expr": "max by (instance) (1-windows_logical_disk_free_bytes{job=~\"$job\", volume=~\".:\"}/windows_logical_disk_size_bytes{job=~\"$job\", volume=~\".:\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -848,7 +848,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_net_bytes_sent_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
+          "expr": "max by (instance) (irate(windows_net_bytes_sent_total{job=~\"$job\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m]))*8",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -880,7 +880,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "-max by (instance) (irate(windows_net_bytes_received_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
+          "expr": "-max by (instance) (irate(windows_net_bytes_received_total{job=~\"$job\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m]))*8",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1003,7 +1003,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "-max by (instance) (irate(windows_logical_disk_read_bytes_total{job=~\"$job\"}[2m]))",
+          "expr": "-max by (instance) (irate(windows_logical_disk_read_bytes_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1036,7 +1036,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total{job=~\"$job\"}[2m]))",
+          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1160,7 +1160,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total{job=~\"$job\"}[2m]))",
+          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1193,7 +1193,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_logical_disk_writes_total{job=~\"$job\"}[2m]))",
+          "expr": "max by (instance) (irate(windows_logical_disk_writes_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1514,7 +1514,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "100 - (windows_logical_disk_free_bytes{job=~\"$job\",instance=~\"$instance\"} / windows_logical_disk_size_bytes{job=~\"$job\",instance=~\"$instance\"})*100",
+          "expr": "100 - (windows_logical_disk_free_bytes{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"} / windows_logical_disk_size_bytes{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"})*100",
           "instant": false,
           "interval": "",
           "legendFormat": "{{volume}}",
@@ -2389,7 +2389,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "windows_logical_disk_free_bytes{job=~\"$job\",instance=~\"$instance\"}",
+          "expr": "windows_logical_disk_free_bytes{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2421,7 +2421,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "windows_logical_disk_size_bytes{job=~\"$job\",instance=~\"$instance\"}",
+          "expr": "windows_logical_disk_size_bytes{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2544,7 +2544,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "irate(windows_net_bytes_sent_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m])*8>0\r\n",
+          "expr": "irate(windows_net_bytes_sent_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m])*8>0\r\n",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2577,7 +2577,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "irate(windows_net_bytes_received_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m])*8\n",
+          "expr": "irate(windows_net_bytes_received_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m])*8\n",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2696,7 +2696,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "irate(windows_logical_disk_read_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])\r",
+          "expr": "irate(windows_logical_disk_read_bytes_total{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}[5m])\r",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2727,7 +2727,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "irate(windows_logical_disk_write_bytes_total{job=~\"$job\",instance=~\"$instance\"}[5m])\r",
+          "expr": "irate(windows_logical_disk_write_bytes_total{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}[5m])\r",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2845,7 +2845,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "irate(windows_logical_disk_reads_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_logical_disk_reads_total{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2876,7 +2876,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "irate(windows_logical_disk_writes_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_logical_disk_writes_total{job=~\"$job\", instance=~\"$instance\", volume=~\".:\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2974,7 +2974,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "off"
             }
           },
           "links": [],
@@ -2987,14 +2987,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "orange",
-                "value": 80
-              },
-              {
-                "color": "red",
-                "value": 90
               }
             ]
           },
@@ -3036,7 +3028,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "round((irate(windows_net_bytes_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m]) * 8 / (windows_net_current_bandwidth_bytes{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'} * 8)) * 100)",
+          "expr": "round((irate(windows_net_bytes_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) * 8 / (windows_net_current_bandwidth_bytes{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"} * 8)) * 100)",
           "interval": "",
           "legendFormat": "{{nic}}",
           "range": true,
@@ -3109,7 +3101,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "irate(windows_net_packets_outbound_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~'isatap.*|VPN.*'}[5m]) + irate(windows_net_packets_outbound_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_net_packets_outbound_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) + irate(windows_net_packets_outbound_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -3142,7 +3134,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "irate(windows_net_packets_received_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~'isatap.*|VPN.*'}[5m]) + irate(windows_net_packets_received_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_net_packets_received_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) + irate(windows_net_packets_received_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -3449,9 +3441,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "Lan Windows",
-          "value": "Lan Windows"
+          "selected": false
         },
         "datasource": {
           "type": "prometheus",
@@ -3479,7 +3469,6 @@
       },
       {
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -3509,9 +3498,7 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "srv-backup:9182",
-          "value": "srv-backup:9182"
+          "selected": false
         },
         "datasource": {
           "type": "prometheus",
@@ -3539,9 +3526,7 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "SRV-BACKUP",
-          "value": "SRV-BACKUP"
+          "selected": false
         },
         "datasource": {
           "type": "prometheus",
