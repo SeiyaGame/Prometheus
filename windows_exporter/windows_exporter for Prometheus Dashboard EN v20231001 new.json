@@ -626,7 +626,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "max by (instance) (1 - windows_logical_disk_free_bytes{job=~\"$job\"}/windows_logical_disk_size_bytes{job=~\"$job\"})",
+          "expr": "max by (instance) (1 - windows_logical_disk_free_bytes{job=~\"$job\", volume=~\".:\"}/windows_logical_disk_size_bytes{job=~\"$job\", volume=~\".:\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1204,7 +1204,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total{job=~\"$job\"}[2m]))",
+          "expr": "max by (instance) (irate(windows_logical_disk_write_bytes_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1324,7 +1324,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total{job=~\"$job\"}[2m]))",
+          "expr": "-max by (instance) (irate(windows_logical_disk_reads_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1357,7 +1357,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_logical_disk_writes_total{job=~\"$job\"}[2m]))",
+          "expr": "max by (instance) (irate(windows_logical_disk_writes_total{job=~\"$job\", volume=~\".:\"}[2m]))",
           "format": "time_series",
           "functions": [],
           "group": {
