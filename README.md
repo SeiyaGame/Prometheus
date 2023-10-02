@@ -13,12 +13,12 @@ No option yet exists to reduce it
 
 ## Screenshot (Old version)
 
-The old version of the dashboard is available [here](windows_exporter/windows_exporter%20for%20Prometheus%20Dashboard%20EN%20v20230925%20old.json)
+The old version of the dashboard is available [here](windows_exporter/windows_exporter%20for%20Prometheus%20Dashboard%20EN%20v20231002%20old.json)
 
 ![](windows_exporter/grafana_windows_dashboard_old.PNG)
 
 ## Screenshot (migrated to react)
 
-The dashboard json file is available [here](windows_exporter/windows_exporter%20for%20Prometheus%20Dashboard%20EN%20v20231001%20new.json)
+The dashboard json file is available [here](windows_exporter/windows_exporter%20for%20Prometheus%20Dashboard%20EN%20v20231002%20new.json)
 
 ![](windows_exporter/grafana_windows_dashboard_new.png)
