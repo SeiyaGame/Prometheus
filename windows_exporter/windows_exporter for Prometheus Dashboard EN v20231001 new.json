@@ -1014,7 +1014,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "max by (instance) (irate(windows_net_bytes_sent_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
+          "expr": "max by (instance) (irate(windows_net_bytes_sent_total{job=~\"$job\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m]))*8",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -1046,7 +1046,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "-max by (instance) (irate(windows_net_bytes_received_total{job=~\"$job\",nic!~'isatap.*|VPN.*'}[2m]))*8",
+          "expr": "-max by (instance) (irate(windows_net_bytes_received_total{job=~\"$job\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m]))*8",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2748,7 +2748,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -2790,7 +2790,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(windows_net_bytes_sent_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m]) * 8 > 0",
+          "expr": "irate(windows_net_bytes_sent_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) * 8 > 0",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2825,7 +2825,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(windows_net_bytes_received_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m]) * 8",
+          "expr": "irate(windows_net_bytes_received_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) * 8",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -2910,7 +2910,7 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "Bps"
         },
         "overrides": []
       },
@@ -3267,7 +3267,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "round((irate(windows_net_bytes_total{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'}[5m]) * 8 / (windows_net_current_bandwidth_bytes{job=~\"$job\",instance=~\"$instance\",nic!~'isatap.*|VPN.*'} * 8)) * 100)",
+          "expr": "round((irate(windows_net_bytes_total{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) * 8 / (windows_net_current_bandwidth_bytes{job=~\"$job\",instance=~\"$instance\",nic!~\"(?i:(.*(isatap|VPN).*))\"} * 8)) * 100)",
           "interval": "",
           "legendFormat": "{{nic}}",
           "range": true,
@@ -3368,7 +3368,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(windows_net_packets_outbound_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~'isatap.*|VPN.*'}[5m]) + irate(windows_net_packets_outbound_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_net_packets_outbound_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) + irate(windows_net_packets_outbound_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -3403,7 +3403,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(windows_net_packets_received_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~'isatap.*|VPN.*'}[5m]) + irate(windows_net_packets_received_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
+          "expr": "irate(windows_net_packets_received_discarded_total{job=~\"$job\",instance=~\"$instance\", nic!~\"(?i:(.*(isatap|VPN).*))\"}[5m]) + irate(windows_net_packets_received_errors_total{job=~\"$job\",instance=~\"$instance\"}[5m])",
           "format": "time_series",
           "functions": [],
           "group": {
@@ -3743,9 +3743,7 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "flavienpcfixe:9182",
-          "value": "flavienpcfixe:9182"
+          "selected": false
         },
         "datasource": {
           "type": "prometheus",
@@ -3773,9 +3771,7 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "flavienPcFixe",
-          "value": "flavienPcFixe"
+          "selected": false
         },
         "datasource": {
           "type": "prometheus",
@@ -3804,7 +3800,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -3834,6 +3830,6 @@
   "timezone": "",
   "title": "windows_exporter for Prometheus Dashboard EN v20231001",
   "uid": "1XaPI0Ink",
-  "version": 32,
+  "version": 33,
   "weekStart": ""
 }
