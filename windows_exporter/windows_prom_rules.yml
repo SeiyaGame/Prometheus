@@ -1,7 +1,21 @@
 groups:
 
-- name: windowshostGroup
+- name: WindowsExporter
+
   rules:
+
+###
+# HOST
+###
+
+  - alert: WindowServerNodeDown
+    expr: up == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Node {{ $labels.instance }} is down
+      description: Failed to scrape {{ $labels.instance }} for more than 2 minutes. Node seems down.
 
 ###
 # CPU
@@ -10,12 +24,12 @@ groups:
   # CPU Usage is more than 80%
   - alert: WindowsServerCpuUsage
     expr: 100 - (avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[2m])) * 100) > 80
-    for: 0m
+    for: 10m
     labels:
       severity: warning
     annotations:
       summary: Windows Server CPU Usage (instance {{ $labels.instance }})
-      description: "CPU Usage is more than 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "CPU Usage is more than 80%\n  VALUE = {{ $value | humanize }}"
 
 ###
 # Memory
@@ -26,48 +40,59 @@ groups:
     expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 90
     for: 2m
     labels:
-      severity: warning
+      severity: high
     annotations:
       summary: Windows Server memory Usage (instance {{ $labels.instance }})
-      description: "Memory usage is more than 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Memory usage is more than 90%\n  VALUE = {{ $value | humanize }}"
 
 ###
 # Disk
 ###
 
-  # Disk usage is more than 80%
+  # Disk usage is more than 95%
   - alert: WindowsServerDiskSpaceUsage
-    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024 ) / (windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024)) > 80
-    for: 2m
+    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024 ) / (windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / 1024 / 1024)) > 95
+    for: 10m
     labels:
       severity: critical
     annotations:
       summary: Windows Server disk Space Usage (instance {{ $labels.instance }})
-      description: "Disk usage is more than 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Disk Space on Drive is used more than 95%\n  VALUE = {{ $value | humanize }}"
+
+  # Alerts on disks with over 85% space usage predicted to fill within the next four days
+  - alert: WindowsServerDiskFilling
+    expr: 100 * (windows_logical_disk_free_bytes{volume=~"[A-Z]:"} / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}) < 15 and predict_linear(windows_logical_disk_free_bytes{volume=~"[A-Z]:"}[6h], 4 * 24 * 3600) < 0
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Windows Server Disk full in four days (instance {{ $labels.instance }})"
+      description: "{{ $labels.volume }} is expected to fill up within four days. Currently {{ $value | humanize }}% is available.\n VALUE = {{ $value }}"
+
 
 ###
 # Disk Latency
 ###
 
-  # Disk latency (read operations > 100ms)
+  # Disk latency (read operations > 150ms)
   - alert: WindowsServerDiskReadLatency
-    expr: rate(windows_logical_disk_read_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.1
+    expr: rate(windows_logical_disk_read_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.15
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: Windows Server disk read latency (instance {{ $labels.instance }})
-      description: "Disk latency (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Disk latency (read operations > 150ms)\n  VALUE = {{ $value | humanize }}"
 
-  # Disk latency (write operations > 100ms)
+  # Disk latency (write operations > 150ms)
   - alert: WindowsServerDiskWriteLatency
-    expr: rate(windows_logical_disk_write_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.1
+    expr: rate(windows_logical_disk_write_latency_seconds_total{volume=~"[A-Z]:"}[1m]) > 0.15
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: Windows Server disk write latency (instance {{ $labels.instance }})
-      description: "Disk latency (write operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Disk latency (write operations > 150ms)\n  VALUE = {{ $value | humanize }}"
 
 ###
 # Disk usage
@@ -81,7 +106,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk read rate (instance {{ $labels.instance }})
-      description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value | humanize }}"
 
   # Disk is probably writing too much data (> 50 MB/s)
   - alert: WindowsServerDiskWriteRate
@@ -91,7 +116,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk write rate (instance {{ $labels.instance }})
-      description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value | humanize }}"
 
 ###
 # Windows exporter
@@ -105,7 +130,7 @@ groups:
       severity: critical
     annotations:
       summary: Windows Server collector Error (instance {{ $labels.instance }})
-      description: "Collector {{ $labels.collector }} was not successful\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Collector {{ $labels.collector }} was not successful\n  VALUE = {{ $value | humanize }}"
 
 ###
 # Uptime
@@ -116,31 +141,41 @@ groups:
     expr: (time() - windows_system_system_up_time) / 60 < 30
     for: 0m
     labels:
-      severity: critical
+      severity: warning
     annotations:
       summary: Windows Server Uptime (instance {{ $labels.instance }})
-      description: "Uptime is lower than 30 min\n VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Uptime is lower than 30 min\n VALUE = {{ $value | humanize }}"
 
 ###
 # Network
 ###
 
-  # Windows Server network interfaces are probably receiving too much data (> 100 MB/s)
+  # Windows Server network interfaces are probably receiving too much data (> 250 MB/s)
   - alert: WindowsServerUnusualNetworkThroughputIn
-    expr: sum by (instance) (rate(windows_net_bytes_sent_total{nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m])) / 1024 / 1024 > 100
-    for: 5m
+    expr: sum by (instance) (rate(windows_net_bytes_sent_total{nic!~"(?i:(.*(isatap|VPN).*))"}[2m])) / 1024 / 1024 > 250
+    for: 15m
     labels:
       severity: warning
     annotations:
       summary: Windows Server unusual network throughput in (instance {{ $labels.instance }})
-      description: "Windows Server network interfaces are probably receiving too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Windows Server network interfaces are probably receiving too much data (> 250 MB/s)\n  VALUE = {{ $value | humanize }}"
 
-  # Windows Server network interfaces are probably sending too much data (> 100 MB/s)
+  # Windows Server network interfaces are probably sending too much data (> 250 MB/s)
   - alert: WindowsServerUnusualNetworkThroughputOut
-    expr: sum by (instance) (rate(windows_net_bytes_received_total{nic!~\"(?i:(.*(isatap|VPN).*))\"}[2m])) / 1024 / 1024 > 100
-    for: 5m
+    expr: sum by (instance) (rate(windows_net_bytes_received_total{nic!~"(?i:(.*(isatap|VPN).*))"}[2m])) / 1024 / 1024 > 250
+    for: 15m
     labels:
       severity: warning
     annotations:
       summary: Windows Server unusual network throughput out (instance {{ $labels.instance }})
-      description: "Windows Server network interfaces are probably sending too much data (> 100 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "Windows Server network interfaces are probably sending too much data (> 250 MB/s)\n  VALUE = {{ $value | humanize }}"
+
+  # Windows Server network traffic usage is greater than 95%
+  - alert: WindowsServerNetInterfaceUsage
+    expr: rate(windows_net_bytes_total{nic!~"(?i:(.*(isatap|VPN).*))"}[2m]) / windows_net_current_bandwidth_bytes{nic!~"(?i:(.*(isatap|VPN).*))"} * 100 > 95
+    for: 10m
+    labels:
+      severity: high
+    annotations:
+      summary: "Network Interface Usage (instance {{ $labels.instance }})"
+      description: "Network traffic usage is greater than 95% for interface {{ $labels.nic }}\n  VALUE = {{ $value | humanize }}"
