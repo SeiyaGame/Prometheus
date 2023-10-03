@@ -2174,7 +2174,7 @@
       "seriesOverrides": [
         {
           "$$hashKey": "object:225",
-          "alias": "/.*Physical Memory.*/",
+          "alias": "/.*[Pp]hysical [Mm]emory.*/",
           "linewidth": 2
         }
       ],
