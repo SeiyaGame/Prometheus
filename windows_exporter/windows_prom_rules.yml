@@ -29,7 +29,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server CPU Usage (instance {{ $labels.instance }})
-      description: "CPU Usage is more than 80%\n  VALUE = {{ $value | humanize }}"
+      description: "CPU Usage is more than 80%\n  VALUE = {{ $value }}"
 
 ###
 # Memory
@@ -43,7 +43,7 @@ groups:
       severity: high
     annotations:
       summary: Windows Server memory Usage (instance {{ $labels.instance }})
-      description: "Memory usage is more than 90%\n  VALUE = {{ $value | humanize }}"
+      description: "Memory usage is more than 90%\n  VALUE = {{ $value }}"
 
 ###
 # Disk
@@ -57,7 +57,7 @@ groups:
       severity: critical
     annotations:
       summary: Windows Server disk Space Usage (instance {{ $labels.instance }})
-      description: "Disk Space on Drive is used more than 95%\n  VALUE = {{ $value | humanize }}"
+      description: "Disk Space on Drive is used more than 95%\n  VALUE = {{ $value }}"
 
   # Alerts on disks with over 85% space usage predicted to fill within the next four days
   - alert: WindowsServerDiskFilling
@@ -67,7 +67,7 @@ groups:
       severity: warning
     annotations:
       summary: "Windows Server Disk full in four days (instance {{ $labels.instance }})"
-      description: "{{ $labels.volume }} is expected to fill up within four days. Currently {{ $value | humanize }}% is available.\n VALUE = {{ $value }}"
+      description: "{{ $labels.volume }} is expected to fill up within four days. Currently {{ $value }}% is available.\n VALUE = {{ $value }"
 
 
 ###
@@ -82,7 +82,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk read latency (instance {{ $labels.instance }})
-      description: "Disk latency (read operations > 150ms)\n  VALUE = {{ $value | humanize }}"
+      description: "Disk latency (read operations > 150ms)\n  VALUE = {{ $value }}"
 
   # Disk latency (write operations > 150ms)
   - alert: WindowsServerDiskWriteLatency
@@ -92,7 +92,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk write latency (instance {{ $labels.instance }})
-      description: "Disk latency (write operations > 150ms)\n  VALUE = {{ $value | humanize }}"
+      description: "Disk latency (write operations > 150ms)\n  VALUE = {{ $value }}"
 
 ###
 # Disk usage
@@ -106,7 +106,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk read rate (instance {{ $labels.instance }})
-      description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value | humanize }}"
+      description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}"
 
   # Disk is probably writing too much data (> 50 MB/s)
   - alert: WindowsServerDiskWriteRate
@@ -116,7 +116,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server disk write rate (instance {{ $labels.instance }})
-      description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value | humanize }}"
+      description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}"
 
 ###
 # Windows exporter
@@ -130,7 +130,7 @@ groups:
       severity: critical
     annotations:
       summary: Windows Server collector Error (instance {{ $labels.instance }})
-      description: "Collector {{ $labels.collector }} was not successful\n  VALUE = {{ $value | humanize }}"
+      description: "Collector {{ $labels.collector }} was not successful\n  VALUE = {{ $value }}"
 
 ###
 # Uptime
@@ -144,7 +144,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server Uptime (instance {{ $labels.instance }})
-      description: "Uptime is lower than 30 min\n VALUE = {{ $value | humanize }}"
+      description: "Uptime is lower than 30 min\n VALUE = {{ $value }}"
 
 ###
 # Network
@@ -158,7 +158,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server unusual network throughput in (instance {{ $labels.instance }})
-      description: "Windows Server network interfaces are probably receiving too much data (> 250 MB/s)\n  VALUE = {{ $value | humanize }}"
+      description: "Windows Server network interfaces are probably receiving too much data (> 250 MB/s)\n  VALUE = {{ $value }}"
 
   # Windows Server network interfaces are probably sending too much data (> 250 MB/s)
   - alert: WindowsServerUnusualNetworkThroughputOut
@@ -168,7 +168,7 @@ groups:
       severity: warning
     annotations:
       summary: Windows Server unusual network throughput out (instance {{ $labels.instance }})
-      description: "Windows Server network interfaces are probably sending too much data (> 250 MB/s)\n  VALUE = {{ $value | humanize }}"
+      description: "Windows Server network interfaces are probably sending too much data (> 250 MB/s)\n  VALUE = {{ $value }}"
 
   # Windows Server network traffic usage is greater than 95%
   - alert: WindowsServerNetInterfaceUsage
@@ -178,4 +178,4 @@ groups:
       severity: high
     annotations:
       summary: "Network Interface Usage (instance {{ $labels.instance }})"
-      description: "Network traffic usage is greater than 95% for interface {{ $labels.nic }}\n  VALUE = {{ $value | humanize }}"
+      description: "Network traffic usage is greater than 95% for interface {{ $labels.nic }}\n  VALUE = {{ $value }}"
