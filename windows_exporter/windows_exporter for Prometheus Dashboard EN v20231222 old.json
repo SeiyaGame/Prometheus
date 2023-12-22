@@ -27,7 +27,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.0.2"
+      "version": "10.2.3"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph (old)",
+      "version": ""
     },
     {
       "type": "datasource",
@@ -43,8 +49,8 @@
     },
     {
       "type": "panel",
-      "id": "table",
-      "name": "Table",
+      "id": "table-old",
+      "name": "Table (old)",
       "version": ""
     },
     {
@@ -70,7 +76,7 @@
       }
     ]
   },
-  "description": "【English version】Update 2023.10.02,  Includes: CPU, memory, disk IO, network, temperature and other monitoring metrics",
+  "description": "【English version】Update 2023.12.22,  Includes: CPU, memory, disk IO, network, temperature and other monitoring metrics",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 10467,
@@ -118,7 +124,7 @@
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "NVDbY2A7z"
       },
       "gridPos": {
         "h": 1,
@@ -132,7 +138,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "NVDbY2A7z"
           },
           "refId": "A"
         }
@@ -146,6 +152,7 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
+      "description": "",
       "fontSize": "80%",
       "gridPos": {
         "h": 6,
@@ -215,7 +222,7 @@
           "link": true,
           "linkTargetBlank": false,
           "linkTooltip": "Browse host details",
-          "linkUrl": "d/1XaRI0Ink/windows_exporter?orgId=1&var-job=${job}&var-hostname=All&var-instance=${__cell_4}",
+          "linkUrl": "d/1XaRI0Ink/?var-job=${job}&var-hostname=All&var-instance=${__cell_3}",
           "mappingType": 1,
           "pattern": "instance",
           "thresholds": [],
@@ -616,7 +623,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -724,7 +731,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -830,7 +837,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -985,7 +992,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1142,7 +1149,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1255,7 +1262,7 @@
       "collapsed": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "NVDbY2A7z"
       },
       "gridPos": {
         "h": 1,
@@ -1269,7 +1276,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "NVDbY2A7z"
           },
           "refId": "A"
         }
@@ -1344,9 +1351,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "repeat": "host",
       "repeatDirection": "v",
       "targets": [
@@ -1419,6 +1427,8 @@
       "links": [],
       "maxDataPoints": 100,
       "options": {
+        "minVizHeight": 50,
+        "minVizWidth": 200,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1429,9 +1439,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "manual",
         "text": {}
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1494,8 +1505,10 @@
       "links": [],
       "options": {
         "displayMode": "lcd",
+        "maxVizHeight": 100,
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1505,10 +1518,11 @@
           "values": false
         },
         "showUnfilled": true,
+        "sizing": "manual",
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1574,7 +1588,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1691,7 +1705,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1818,9 +1832,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "repeat": "host",
       "repeatDirection": "v",
       "targets": [
@@ -1895,6 +1910,8 @@
       "links": [],
       "maxDataPoints": 100,
       "options": {
+        "minVizHeight": 50,
+        "minVizWidth": 200,
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -1905,9 +1922,10 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "manual",
         "text": {}
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -1989,9 +2007,10 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "repeat": "host",
       "repeatDirection": "v",
       "targets": [
@@ -2060,7 +2079,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2167,7 +2186,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2367,7 +2386,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2527,7 +2546,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2680,7 +2699,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2829,7 +2848,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2944,6 +2963,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -3084,7 +3104,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3237,7 +3257,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3356,7 +3376,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "10.1.2",
+      "pluginVersion": "10.2.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -3431,9 +3451,8 @@
       }
     }
   ],
-  "refresh": false,
-  "schemaVersion": 38,
-  "style": "dark",
+  "refresh": "",
+  "schemaVersion": 39,
   "tags": [
     "Prometheus",
     "windows_exporter"
@@ -3441,9 +3460,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -3469,10 +3486,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -3498,9 +3512,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -3526,9 +3538,7 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -3584,8 +3594,8 @@
     ]
   },
   "timezone": "",
-  "title": "windows_exporter for Prometheus Dashboard EN v20231002",
+  "title": "windows_exporter for Prometheus Dashboard EN v20231222 old",
   "uid": "1XaRI0Ink",
-  "version": 12,
+  "version": 8,
   "weekStart": ""
 }
